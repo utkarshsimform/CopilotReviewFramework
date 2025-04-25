@@ -25,8 +25,8 @@ jobs:
 
       - name: Run GitHub Copilot Agent for PR Review
         run: |
-          .CopilotReviewFramework/scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
+          ./scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
 
       - name: Post PR Review Results
         run: |
-          .CopilotReviewFramework/scripts/post-pr-feedback.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.event.pull_request.number }} ${{ github.repository }} ./review-results.txt
+          ./scripts/post-pr-feedback.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.event.pull_request.number }} ${{ github.repository }} ./review-results.txt
