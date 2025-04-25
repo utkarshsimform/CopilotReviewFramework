@@ -15,12 +15,14 @@ jobs:
       - name: Set up .NET SDK (for C#)
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0'
+          dotnet-version: '9.0'
 
+      # If your project is in a subdirectory like 'src/', you need to specify that.
+      # Otherwise, if the .csproj/.sln is in the root directory, you don't need to change anything here.
       - name: Install dependencies
         run: |
-          dotnet restore
-
+          dotnet restore .HelloWorldApp/HelloWorldApp.csproj
+          
       - name: Run GitHub Copilot Agent for PR Review
         run: |
           .CopilotReviewFramework/scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
