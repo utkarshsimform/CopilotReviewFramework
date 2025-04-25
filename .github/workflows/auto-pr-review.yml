@@ -21,8 +21,8 @@ jobs:
       # Otherwise, if the .csproj/.sln is in the root directory, you don't need to change anything here.
       - name: Install dependencies
         run: |
-          dotnet restore .HelloWorldApp/HelloWorldApp.csproj
-          
+          dotnet restore dotnet restore HelloWorldApp/HelloWorldApp.csproj
+
       - name: Run GitHub Copilot Agent for PR Review
         run: |
           .CopilotReviewFramework/scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
