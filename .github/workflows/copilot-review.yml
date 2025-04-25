@@ -12,6 +12,6 @@ jobs:
       contents: read
     steps:
       - name: Copilot Review Agent
-        uses: github/ghas-copilot-review-action@v1
+        uses: github/copilot-review-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
