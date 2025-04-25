@@ -29,4 +29,4 @@ jobs:
 
       - name: Post PR Review Results
         run: |
-          ./scripts/post-pr-feedback.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.event.pull_request.number }} ${{ github.repository }} ./review-results.txt
+          CopilotReviewFramework/scripts/post-pr-feedback.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.event.pull_request.number }} ${{ github.repository }} ./review-results.txt
