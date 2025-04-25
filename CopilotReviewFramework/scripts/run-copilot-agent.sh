@@ -23,7 +23,10 @@ if [ -z "$REVIEW_OUTPUT_FILE" ]; then
   echo "Error: Output file path is required."
   exit 1
 fi
-
+echo "Utkarsh"
+echo "PR_NUMBER: $PR_NUMBER"
+echo "INSTRUCTIONS_FILE: $INSTRUCTIONS_FILE"
+echo "REVIEW_OUTPUT_FILE: $REVIEW_OUTPUT_FILE"
 # Log the start of the review process
 echo "Starting Copilot Agent for PR #$PR_NUMBER"
 
