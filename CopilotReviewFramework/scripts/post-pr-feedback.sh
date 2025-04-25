@@ -11,6 +11,7 @@ REVIEW_CONTENT=$(cat $REVIEW_RESULTS_FILE)
 
 # Define the GitHub API URL for posting comments
 API_URL="https://api.github.com/repos/$REPO_NAME/issues/$PR_NUMBER/comments"
+echo "API_URL: $API_URL"
 
 # Post feedback as a comment on the PR
 curl -X POST \
@@ -22,4 +23,9 @@ curl -X POST \
 }
 EOF
 
+echo "GITHUB_TOKEN: $GITHUB_TOKEN"
+echo "PR_NUMBER: $PR_NUMBER"
+echo "REPO_NAME: $REPO_NAME"
+echo "REVIEW_RESULTS_FILE: $REVIEW_RESULTS_FILE"
+echo "REVIEW_CONTENT: $REVIEW_CONTENT"
 echo "Feedback posted to PR #$PR_NUMBER in repository $REPO_NAME"
