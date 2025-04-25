@@ -23,7 +23,10 @@ if [ -z "$REVIEW_OUTPUT_FILE" ]; then
   echo "Error: Output file path is required."
   exit 1
 fi
-
+echo "Utkarsh"
+echo "PR_NUMBER: $PR_NUMBER"
+echo "INSTRUCTIONS_FILE: $INSTRUCTIONS_FILE"
+echo "REVIEW_OUTPUT_FILE: $REVIEW_OUTPUT_FILE"
 # Log the start of the review process
 echo "Starting Copilot Agent for PR #$PR_NUMBER"
 
@@ -32,6 +35,9 @@ echo "Starting Copilot Agent for PR #$PR_NUMBER"
 # Example: Use GitHub Copilot API (or a similar service) to review the PR. This is a placeholder.
 # In a real scenario, replace this with the actual tool invocation.
 # For example, using GitHub API or Copilot CLI if available.
+
+# Then pass the content to your tool (pseudo-code below)
+copilot-review-tool --instructions "$INSTRUCTIONS" --pr "$PR_NUMBER" >> "$REVIEW_OUTPUT_FILE"
 
 echo "Reviewing PR #$PR_NUMBER using instructions from $INSTRUCTIONS_FILE..." > $REVIEW_OUTPUT_FILE
 echo "Performing static analysis on the code..." >> $REVIEW_OUTPUT_FILE
