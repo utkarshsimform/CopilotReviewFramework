@@ -1,6 +1,6 @@
 // sample.cs
-public class HelloWorld1 {
-    public void SayHello1(){
+public class HelloWorld {
+    public void SayHello(){
         Console.WriteLine("Hello world!");
     }
 }
