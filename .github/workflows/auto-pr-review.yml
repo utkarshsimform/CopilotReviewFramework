@@ -1,0 +1,30 @@
+name: Auto PR Review for C#
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET SDK (for C#)
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0'
+
+      - name: Install dependencies
+        run: |
+          dotnet restore
+
+      - name: Run GitHub Copilot Agent for PR Review
+        run: |
+          .CopilotReviewFramework/scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
+
+      - name: Post PR Review Results
+        run: |
+          .CopilotReviewFramework/scripts/post-pr-feedback.sh ${{ secrets.GITHUB_TOKEN }} ${{ github.event.pull_request.number }} ${{ github.repository }} ./review-results.txt
