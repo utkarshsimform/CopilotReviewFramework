@@ -1,0 +1,14 @@
+# .github/copilot.yaml
+
+version: 1
+rules:
+  - id: review-pr
+    trigger: pull_request
+    actions:
+      - type: review
+        strategy: intelligent
+        language: en
+        suggestions: true
+        label: copilot-review
+        reviewers:
+          - utkarshsimform
