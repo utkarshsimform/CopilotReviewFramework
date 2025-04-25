@@ -38,10 +38,7 @@ echo "Performing static analysis on the code..." >> $REVIEW_OUTPUT_FILE
 
 # Simulate results - Replace this with actual Copilot/Review tool interaction
 echo "Review Results for PR #$PR_NUMBER:" >> $REVIEW_OUTPUT_FILE
-# Review Results Example
-echo "- Suggestion 1: Improve code readability in \`SomeFile.cs\` by refactoring method \`SomeMethod()\`" >> $REVIEW_OUTPUT_FILE
-echo "- Suggestion 2: Add unit tests for method \`AnotherMethod()\` in \`AnotherFile.cs\`" >> $REVIEW_OUTPUT_FILE
-echo "- Suggestion 3: Consider optimizing performance in \`PerformanceCritical.cs\`" >> $REVIEW_OUTPUT_FILE
+
 echo "End of review." >> $REVIEW_OUTPUT_FILE
 
 # Print the results
