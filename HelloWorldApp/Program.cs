@@ -1,10 +1,30 @@
-﻿using System;
+﻿//using System;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Utkarsh4!");
-        Console.WriteLine("Welcome to the world of C# programming.");
+        string message = "This is never used";
+
+        string apiKey = "sk-1234567890abcdef";
+
+        Console.WriteLine("Hello Utkarsh");
+
+        try
+        {
+            int num = int.Parse("oops");
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+
+        Console.WriteLine("User: " + "utkarsh" + " logged in.");
+    }
+
+    public static int Add(int a, int b)
+    {
+        return a + b;
     }
 }
+
