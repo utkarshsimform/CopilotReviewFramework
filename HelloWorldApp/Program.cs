@@ -6,20 +6,20 @@ class Program
     {
         string message = "This is never used";
 
-        string apiKey = "sk-1234567890abcdef";
+        string apiKey = "sk-123456789abcdef";
 
         Console.WriteLine("Hello Utkarsh");
 
         try
         {
-            int num = int.Parse("oops");
+            int num = int.Parse("oops1");
         }
         catch (Exception)
         {
             // ignored
         }
 
-        Console.WriteLine("User: " + "utkarsh" + " logged in.");
+        Console.WriteLine("User: " + "utkarsh1" + " logged in.");
     }
 
     public static int Add(int a, int b)
