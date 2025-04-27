@@ -38,6 +38,7 @@ echo "Starting Copilot Agent for PR #$PR_NUMBER"
 
 # Then pass the content to your tool (pseudo-code below)
 # copilot-review-tool --instructions "$INSTRUCTIONS" --pr "$PR_NUMBER" >> "$REVIEW_OUTPUT_FILE"
+# copilot-agent review-pr --pr-url "https://github.com/utkarshsimform/CopilotReviewFramework/pull/31" --instructions-file "./pr-review-instructions.md"
 
 # cat Program.cs >> "$REVIEW_OUTPUT_FILE"
 
