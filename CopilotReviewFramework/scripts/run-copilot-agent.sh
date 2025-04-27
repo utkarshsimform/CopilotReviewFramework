@@ -37,7 +37,9 @@ echo "Starting Copilot Agent for PR #$PR_NUMBER"
 # For example, using GitHub API or Copilot CLI if available.
 
 # Then pass the content to your tool (pseudo-code below)
-copilot-review-tool --instructions "$INSTRUCTIONS" --pr "$PR_NUMBER" >> "$REVIEW_OUTPUT_FILE"
+# copilot-review-tool --instructions "$INSTRUCTIONS" --pr "$PR_NUMBER" >> "$REVIEW_OUTPUT_FILE"
+
+# cat Program.cs >> "$REVIEW_OUTPUT_FILE"
 
 echo "Reviewing PR #$PR_NUMBER using instructions from $INSTRUCTIONS_FILE..." > $REVIEW_OUTPUT_FILE
 echo "Performing static analysis on the code..." >> $REVIEW_OUTPUT_FILE

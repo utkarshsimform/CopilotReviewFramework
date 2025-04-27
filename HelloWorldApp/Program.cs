@@ -4,15 +4,15 @@ class Program
 {
     static void Main(string[] args)
     {
-        string message = "This is never used1";
+        string message = "This is never used";
 
-        string apiKey = "sk-123456789abcdef1";
+        string apiKey = "sk-123456789abcdef";
 
-        Console.WriteLine("Hello Utkarsh1");
+        Console.WriteLine("Hello Utkarsh");
 
         try
         {
-            int num = int.Parse("oops1");
+            int num = int.Parse("oops");
         }
         catch (Exception)
         {
