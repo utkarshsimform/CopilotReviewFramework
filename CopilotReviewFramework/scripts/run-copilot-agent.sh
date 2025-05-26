@@ -95,18 +95,26 @@ echo "Performing static analysis on the following files:" >> $REVIEW_OUTPUT_FILE
 # done
 
 # Loop over each changed file and analyze if it's a C# file
+# for file in $CHANGED_FILES; do
+#   if [[ "$file" == *.cs ]]; then
+#     echo "Analyzing $file..." >> $REVIEW_OUTPUT_FILE
+#     if [ -f "$file" ]; then
+#       dotnet format "$file" >> "$REVIEW_OUTPUT_FILE" 2>&1 || echo "dotnet format failed on $file" >> $REVIEW_OUTPUT_FILE
+#     else
+#       echo "Warning: File $file not found in workspace." >> $REVIEW_OUTPUT_FILE
+#     fi
+#   else
+#     echo "Skipping $file (not a .cs file)" >> $REVIEW_OUTPUT_FILE
+#   fi
+# done
+
+# You can optionally log the files being analyzed
 for file in $CHANGED_FILES; do
-  if [[ "$file" == *.cs ]]; then
-    echo "Analyzing $file..." >> $REVIEW_OUTPUT_FILE
-    if [ -f "$file" ]; then
-      dotnet format "$file" >> "$REVIEW_OUTPUT_FILE" 2>&1 || echo "dotnet format failed on $file" >> $REVIEW_OUTPUT_FILE
-    else
-      echo "Warning: File $file not found in workspace." >> $REVIEW_OUTPUT_FILE
-    fi
-  else
-    echo "Skipping $file (not a .cs file)" >> $REVIEW_OUTPUT_FILE
-  fi
+  echo "$file" >> $REVIEW_OUTPUT_FILE
 done
+
+echo "Running dotnet format on the full solution or project..." >> $REVIEW_OUTPUT_FILE
+dotnet format >> "$REVIEW_OUTPUT_FILE" 2>&1 || echo "dotnet format failed." >> $REVIEW_OUTPUT_FILE
 
 # Optional: Use Copilot CLI (if available in future)
 # echo "Running GitHub Copilot Agent..." >> $REVIEW_OUTPUT_FILE
