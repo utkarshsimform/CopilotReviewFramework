@@ -4,7 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string message = "This is never used1";
+        string message = "This is never used";
 
         string apiKey = "sk-123456789abcdef";
 
