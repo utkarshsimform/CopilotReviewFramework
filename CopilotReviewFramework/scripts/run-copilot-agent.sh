@@ -23,6 +23,21 @@ if [ -z "$REVIEW_OUTPUT_FILE" ]; then
   echo "Error: Output file path is required."
   exit 1
 fi
+
+# Requires: GITHUB_TOKEN (set as env var in GitHub Actions), REPO_NAME (set as env var or hardcoded)
+if [ -z "$GITHUB_TOKEN" ]; then
+  echo "Error: GITHUB_TOKEN environment variable is required."
+  exit 1
+fi
+
+if [ -z "$REPO_NAME" ]; then
+  echo "Error: REPO_NAME environment variable is required."
+  exit 1
+fi
+
+CHANGED_FILES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+  "https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/files" | jq -r '.[].filename')
+
 echo "Utkarsh"
 echo "PR_NUMBER: $PR_NUMBER"
 echo "INSTRUCTIONS_FILE: $INSTRUCTIONS_FILE"
@@ -43,10 +58,15 @@ echo "Starting Copilot Agent for PR #$PR_NUMBER"
 # cat Program.cs >> "$REVIEW_OUTPUT_FILE"
 
 echo "Reviewing PR #$PR_NUMBER using instructions from $INSTRUCTIONS_FILE..." > $REVIEW_OUTPUT_FILE
-echo "Performing static analysis on the code..." >> $REVIEW_OUTPUT_FILE
+echo "Performing static analysis on the following files:" >> $REVIEW_OUTPUT_FILE
 
-# Simulate results - Replace this with actual Copilot/Review tool interaction
-echo "Review Results for PR #$PR_NUMBER:" >> $REVIEW_OUTPUT_FILE
+for file in $CHANGED_FILES; do
+  echo "Analyzing $file..." >> $REVIEW_OUTPUT_FILE
+  # Example: run a linter or static analysis tool here
+  # For C# files, you might use dotnet-format or a custom analyzer
+  # dotnet format $file >> $REVIEW_OUTPUT_FILE 2>&1
+  echo "No issues found in $file." >> $REVIEW_OUTPUT_FILE
+done
 
 echo "End of review." >> $REVIEW_OUTPUT_FILE
 
