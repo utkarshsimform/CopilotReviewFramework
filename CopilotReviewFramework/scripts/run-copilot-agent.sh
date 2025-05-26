@@ -35,6 +35,17 @@ if [ -z "$REPO_NAME" ]; then
   exit 1
 fi
 
+# Check for required tools
+if ! command -v jq &> /dev/null; then
+  echo "Error: jq is not installed." >&2
+  exit 2
+fi
+
+if ! command -v curl &> /dev/null; then
+  echo "Error: curl is not installed." >&2
+  exit 3
+fi
+
 CHANGED_FILES_API_URL="https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/files"
 API_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$CHANGED_FILES_API_URL")
 
@@ -69,7 +80,10 @@ echo "Starting Copilot Agent for PR #$PR_NUMBER"
 
 # cat Program.cs >> "$REVIEW_OUTPUT_FILE"
 
-echo "Reviewing PR #$PR_NUMBER using instructions from $INSTRUCTIONS_FILE..." > $REVIEW_OUTPUT_FILE
+# Truncate the output file at the start
+: > "$REVIEW_OUTPUT_FILE"
+
+echo "Reviewing PR #$PR_NUMBER using instructions from $INSTRUCTIONS_FILE..." >> $REVIEW_OUTPUT_FILE
 echo "Performing static analysis on the following files:" >> $REVIEW_OUTPUT_FILE
 
 for file in $CHANGED_FILES; do
@@ -88,22 +102,3 @@ echo "Code review for PR #$PR_NUMBER completed. Results saved to $REVIEW_OUTPUT_
 # Optional: Add any post-review steps (e.g., sending email, notification, etc.)
 
 # End of the script
-
-name: PR Review
-
-on:
-  pull_request:
-
-permissions:
-  pull-requests: read
-
-jobs:
-  review:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Copilot Agent PR Review
-        run: CopilotReviewFramework/scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO_NAME: utkarshsimform/CopilotReviewFramework
