@@ -35,8 +35,20 @@ if [ -z "$REPO_NAME" ]; then
   exit 1
 fi
 
-CHANGED_FILES=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-  "https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/files" | jq -r '.[].filename')
+CHANGED_FILES_API_URL="https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/files"
+API_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$CHANGED_FILES_API_URL")
+
+echo "GitHub API response for changed files:" >> $REVIEW_OUTPUT_FILE
+echo "$API_RESPONSE" >> $REVIEW_OUTPUT_FILE
+
+# Check if the response is an array (success) or not (error)
+if ! echo "$API_RESPONSE" | jq -e 'type=="array"' > /dev/null; then
+  echo "Error: GitHub API did not return an array. Response was:" >> $REVIEW_OUTPUT_FILE
+  echo "$API_RESPONSE" >> $REVIEW_OUTPUT_FILE
+  exit 5
+fi
+
+CHANGED_FILES=$(echo "$API_RESPONSE" | jq -r '.[].filename')
 
 echo "Utkarsh"
 echo "PR_NUMBER: $PR_NUMBER"
