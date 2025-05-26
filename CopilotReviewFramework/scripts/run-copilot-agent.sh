@@ -86,13 +86,31 @@ echo "Starting Copilot Agent for PR #$PR_NUMBER"
 echo "Reviewing PR #$PR_NUMBER using instructions from $INSTRUCTIONS_FILE..." >> $REVIEW_OUTPUT_FILE
 echo "Performing static analysis on the following files:" >> $REVIEW_OUTPUT_FILE
 
+# for file in $CHANGED_FILES; do
+#   echo "Analyzing $file..." >> $REVIEW_OUTPUT_FILE
+#   # Example: run a linter or static analysis tool here
+#   # For C# files, you might use dotnet-format or a custom analyzer
+#   # dotnet format $file >> $REVIEW_OUTPUT_FILE 2>&1
+#   echo "No issues found in $file." >> $REVIEW_OUTPUT_FILE
+# done
+
+# Loop over each changed file and analyze if it's a C# file
 for file in $CHANGED_FILES; do
-  echo "Analyzing $file..." >> $REVIEW_OUTPUT_FILE
-  # Example: run a linter or static analysis tool here
-  # For C# files, you might use dotnet-format or a custom analyzer
-  # dotnet format $file >> $REVIEW_OUTPUT_FILE 2>&1
-  echo "No issues found in $file." >> $REVIEW_OUTPUT_FILE
+  if [[ "$file" == *.cs ]]; then
+    echo "Analyzing $file..." >> $REVIEW_OUTPUT_FILE
+    if [ -f "$file" ]; then
+      dotnet format "$file" >> "$REVIEW_OUTPUT_FILE" 2>&1 || echo "dotnet format failed on $file" >> $REVIEW_OUTPUT_FILE
+    else
+      echo "Warning: File $file not found in workspace." >> $REVIEW_OUTPUT_FILE
+    fi
+  else
+    echo "Skipping $file (not a .cs file)" >> $REVIEW_OUTPUT_FILE
+  fi
 done
+
+# Optional: Use Copilot CLI (if available in future)
+# echo "Running GitHub Copilot Agent..." >> $REVIEW_OUTPUT_FILE
+# copilot-agent review-pr --pr-url "https://github.com/$REPO_NAME/pull/$PR_NUMBER" --instructions-file "$INSTRUCTIONS_FILE" >> "$REVIEW_OUTPUT_FILE"
 
 echo "End of review." >> $REVIEW_OUTPUT_FILE
 
