@@ -88,3 +88,22 @@ echo "Code review for PR #$PR_NUMBER completed. Results saved to $REVIEW_OUTPUT_
 # Optional: Add any post-review steps (e.g., sending email, notification, etc.)
 
 # End of the script
+
+name: PR Review
+
+on:
+  pull_request:
+
+permissions:
+  pull-requests: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Copilot Agent PR Review
+        run: CopilotReviewFramework/scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_NAME: utkarshsimform/CopilotReviewFramework
