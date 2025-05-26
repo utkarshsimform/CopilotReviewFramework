@@ -21,15 +21,15 @@ jobs:
         with:
           dotnet-version: '9.0'
 
-      # If your project is in a subdirectory like 'src/', you need to specify that. Test
-      # Otherwise, if the .csproj/.sln is in the root directory, you don't need to change anything here.
       - name: Install dependencies
         run: |
           dotnet restore HelloWorldApp/HelloWorldApp.csproj
 
-      - name: Run GitHub Copilot Agent for PR Review
-        run: |
-          CopilotReviewFramework/scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
+      - name: Run Copilot Agent PR Review
+        run: CopilotReviewFramework/scripts/run-copilot-agent.sh ${{ github.event.pull_request.number }} pr-review-instructions.md ./review-results.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_NAME: utkarshsimform/CopilotReviewFramework
 
       - name: Post PR Review Results
         run: |

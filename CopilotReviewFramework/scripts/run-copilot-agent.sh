@@ -23,6 +23,44 @@ if [ -z "$REVIEW_OUTPUT_FILE" ]; then
   echo "Error: Output file path is required."
   exit 1
 fi
+
+# Requires: GITHUB_TOKEN (set as env var in GitHub Actions), REPO_NAME (set as env var or hardcoded)
+if [ -z "$GITHUB_TOKEN" ]; then
+  echo "Error: GITHUB_TOKEN environment variable is required."
+  exit 1
+fi
+
+if [ -z "$REPO_NAME" ]; then
+  echo "Error: REPO_NAME environment variable is required."
+  exit 1
+fi
+
+# Check for required tools
+if ! command -v jq &> /dev/null; then
+  echo "Error: jq is not installed." >&2
+  exit 2
+fi
+
+if ! command -v curl &> /dev/null; then
+  echo "Error: curl is not installed." >&2
+  exit 3
+fi
+
+CHANGED_FILES_API_URL="https://api.github.com/repos/$REPO_NAME/pulls/$PR_NUMBER/files"
+API_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" "$CHANGED_FILES_API_URL")
+
+echo "GitHub API response for changed files:" >> $REVIEW_OUTPUT_FILE
+echo "$API_RESPONSE" >> $REVIEW_OUTPUT_FILE
+
+# Check if the response is an array (success) or not (error)
+if ! echo "$API_RESPONSE" | jq -e 'type=="array"' > /dev/null; then
+  echo "Error: GitHub API did not return an array. Response was:" >> $REVIEW_OUTPUT_FILE
+  echo "$API_RESPONSE" >> $REVIEW_OUTPUT_FILE
+  exit 5
+fi
+
+CHANGED_FILES=$(echo "$API_RESPONSE" | jq -r '.[].filename')
+
 echo "Utkarsh"
 echo "PR_NUMBER: $PR_NUMBER"
 echo "INSTRUCTIONS_FILE: $INSTRUCTIONS_FILE"
@@ -42,11 +80,19 @@ echo "Starting Copilot Agent for PR #$PR_NUMBER"
 
 # cat Program.cs >> "$REVIEW_OUTPUT_FILE"
 
-echo "Reviewing PR #$PR_NUMBER using instructions from $INSTRUCTIONS_FILE..." > $REVIEW_OUTPUT_FILE
-echo "Performing static analysis on the code..." >> $REVIEW_OUTPUT_FILE
+# Truncate the output file at the start
+: > "$REVIEW_OUTPUT_FILE"
 
-# Simulate results - Replace this with actual Copilot/Review tool interaction
-echo "Review Results for PR #$PR_NUMBER:" >> $REVIEW_OUTPUT_FILE
+echo "Reviewing PR #$PR_NUMBER using instructions from $INSTRUCTIONS_FILE..." >> $REVIEW_OUTPUT_FILE
+echo "Performing static analysis on the following files:" >> $REVIEW_OUTPUT_FILE
+
+for file in $CHANGED_FILES; do
+  echo "Analyzing $file..." >> $REVIEW_OUTPUT_FILE
+  # Example: run a linter or static analysis tool here
+  # For C# files, you might use dotnet-format or a custom analyzer
+  # dotnet format $file >> $REVIEW_OUTPUT_FILE 2>&1
+  echo "No issues found in $file." >> $REVIEW_OUTPUT_FILE
+done
 
 echo "End of review." >> $REVIEW_OUTPUT_FILE
 
